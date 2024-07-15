@@ -1,47 +1,33 @@
 ---
-sidebar_position: 1
+id: exalens-platform-overview
+title: Platform Overview
 ---
+# Exalens Platform Overview
 
-# Tutorial Intro
+The **Exalens platform** simplifies the task of unifying **data collection, enrichment**, and **AI-powered** analysis with the click of a button, empowering rapid, data-driven decisions from engineers to C-level executives.
 
-Let's discover **Docusaurus in less than 5 minutes**.
+![Diagram showing the Exalens Platform Architecture with components including Data Source, Internal Data Collector, UNS & Enterprise MQTT Broker, Message Broker, Data Model, AI Analysis, Flow, and Visualization.](exalens_overview.png)
 
-## Getting Started
+## Platform Components
 
-Get started by **creating a new site**.
+### Cortex
+The Exalens Cortex is the core component of the platform, responsible for managing and orchestrating various processes. It integrates data from multiple sources through Data Collectors, acts as the central storage repository, and supports UI interactions to respond to user queries efficiently. It can be deployed on-premises or in the cloud, providing flexibility depending on organizational needs.
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+#### Key Components of Cortex
 
-### What you'll need
+- **Message Broker**: Facilitates communication between different components within the Exalens Platform, ensuring smooth data transmission from the data collectors to the data model and other processing units.
+- **Enterprise MQTT Broker**: Collects data from external sources through MQTT protocols, integrating data from various systems and devices into the platform. Acts as a unified namespace, ensuring a single source of truth, real-time updates, and a comprehensive view of all data points.
+- **Data Hub**: Efficiently stores and manages collected data using time-series and NoSQL databases, simplifying data navigation. Allows users to build customized data models tailored to their specific needs.
+- **AI Analysis**: Leverages machine learning algorithms and custom models to extract meaningful insights and patterns, establishing a baseline for process behavior. Continuously tracks production processes, enabling the detection of deviations and anomalies, prediction of outcomes, and timely decision-making.
+- **Flow**: Performs data engineering tasks using pipelines to transform data and generate KPIs. These KPIs are stored in the data model and published to the unified namespace. Supports data cleaning, aggregation, and enrichment and enables DataOps by automating workflows and ensuring data quality.
+- **Visualization**: Provides tools to display data graphically, making it easier to understand. Offers customizable dashboards, charts, and tables for real-time and historical data. Users can filter and aggregate data in charts, identify patterns, track performance, and make informed decisions. Interactive features allow users to explore specific data points and compare datasets for deeper insights.
+- **Internal Data Collector**: Cortex comes with an Internal Data Collector. It has the same capabilities as the External Data Collector but does not include an Edge MQTT broker because the Internal Data Collector is launched on the same host as the MQTT Enterprise Broker, eliminating the need for it.
 
-- [Node.js](https://nodejs.org/en/download/) version 18.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+### Data Collector
+The Data Collector is responsible for gathering data from various sources. It supports multiple protocols, including OPC UA, MQTT, Sparkplug B, Modbus, SNMP, and MTConnect. It sends the collected data to the Cortex via the broker, ensuring comprehensive data collection and seamless integration for analysis.
 
-## Generate a new site
+An external Data Collector is required when you do not want to open your OPC UA server, Modbus server, or other systems to other networks or external access.
 
-Generate a new Docusaurus site using the **classic template**.
-
-The classic template will automatically be added to your project after you run the command:
-
-```bash
-npm init docusaurus@latest my-website classic
-```
-
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
-
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
-
-```bash
-cd my-website
-npm run start
-```
-
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+It has two components:
+- **Edge MQTT broker**: Allows data sources to publish data directly to the edge broker.
+- **Flow**: Provides the ability to transform data and apply dead band conditions to limit data transfer.
