@@ -30,5 +30,5 @@ function HomepageHeader() {
 }
 
 export default function Home(): JSX.Element {
-  return <Redirect to="/docs/installation" />;
+  return <Redirect to="/userguide/docs/installation" />;
 }
