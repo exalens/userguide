@@ -30,5 +30,5 @@ function HomepageHeader() {
 }
 
 export default function Home(): JSX.Element {
-  return <Redirect to="/userguide/docs/installation" />;
+  return <Redirect to="/userguide/docs/exalens-platform-overview" />;
 }
