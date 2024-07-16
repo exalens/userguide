@@ -47,23 +47,19 @@ const config: Config = {
     ],
   ],
 
+
   themeConfig: {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
-    navbar: {
-      title: 'My Site',
+  colorMode: {
+    defaultMode: 'light',
+    disableSwitch: true, // Disable the switch to prevent changing to dark mode
+  },
+    navbar: {      
       logo: {
         alt: 'My Site Logo',
-        src: 'img/logo.svg',
-      },
-      items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Tutorial',
-        },
-      ],
+        src: 'img/exalens-logo-small-2022-dark-grey.png',
+      },     
     },
     footer: {
       style: 'dark',
