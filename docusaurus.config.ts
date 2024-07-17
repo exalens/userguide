@@ -58,7 +58,7 @@ const config: Config = {
   },
     navbar: {      
       logo: {
-        alt: 'My Site Logo',
+        alt: 'Exalens',
         src: 'img/exalens-logo-small-2022-dark-grey.png',
       },     
     },
