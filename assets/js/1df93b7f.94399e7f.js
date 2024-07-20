@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkuserguide=self.webpackChunkuserguide||[]).push([[583],{8198:(e,u,r)=>{r.r(u),r.d(u,{default:()=>t});r(8774),r(4586),r(1107);var s=r(6347),d=r(4848);function t(){return(0,d.jsx)(s.rd,{to:"/userguide/docs/exalens-platform-overview"})}}}]);
