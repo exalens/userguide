@@ -70,7 +70,7 @@ Selecting the correct Data Collector is crucial. Ensure you choose a Data Collec
 
 ### Create the Data Source
 
-After configuring the server connection details, click the "Create" button. This action establishes a persistent client connection with the OPC UA server. A confirmation message will appear indicating a successful connection. If the connection fails, verify your server URL, authentication details, and network settings, then try again. The client will then be responsible for subscribing to variables and sending data to Cortex.
+After configuring the server connection details, click the "Create" button. This action establishes a persistent client connection with the OPC UA server. A confirmation message will appear indicating a successful connection. If the connection fails, verify your server URL, authentication details, and network settings, then try again.
 
 ![Create Data Source](opcua_img/8.png)
 
@@ -80,7 +80,7 @@ After configuring the server connection details, click the "Create" button. This
 
 ## Collect and Store
 
-After the data source client is created, click on the data source client. Click on "Configure" to open the OPC UA folder structure. Browse through the server folders, select the variables you want to subscribe to, and drag them into the subscription list area. Click on "Save Subscription." Upon successful subscription, you will be taken to the live view where you can monitor the live data.
+After the data source client is created, click on the data source client. Click on "Configure" to open the OPC UA folder structure. Browse through the server folders, select the variables you want to subscribe to, and drag them into the subscription list area. Click on "Save Subscription." Upon successful subscription, you will be taken to the live view where you can monitor the live data. The data collected from these subscriptions will be stored in a time series database for further analysis and historical reference.
 
 ![live view with subscription](opcua_img/11.png)
 
