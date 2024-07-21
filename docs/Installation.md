@@ -104,3 +104,4 @@ To update the license, follow these steps:
 
 ## Accepting the End User License Agreement (EULA)
 You will need to accept the EULA to continue. Please read the agreement and click "Accept".
+After this, the landing page will be displayed, indicating that the installation procedure is completed.

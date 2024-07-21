@@ -1,4 +1,4 @@
-import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
+import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
 
 /**
  * Creating a sidebar enables you to:
@@ -16,7 +16,14 @@ const sidebars: SidebarsConfig = {
   tutorialSidebar: [
     { type: 'doc', id: 'exalens-platform-overview' },
     { type: 'doc', id: 'installation' },
-    ]
+    {
+      type: 'category',
+      label: 'Datasources',
+      items: [
+        { type: 'doc', id: 'datsources/opcua' },
+      ],
+    },
+  ],
 
 };
 
