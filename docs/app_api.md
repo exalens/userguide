@@ -76,8 +76,7 @@ The “/asset” REST API endpoint is used to query data related to system/devic
 
 | **Endpoint** | **Description**         | **Return Type** | **Example Call**                   |
 |:------:|:----------------:|-------:|:---------------------------:|
-| /asset  | Returns all endpoints listed in the Exalens platform.   |     `List[dict]` | curl -X GET "BASE_URL/asset" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"
-  |
+| /asset  | Returns all endpoints listed in the Exalens platform.   |     `List[dict]` | curl -X GET "BASE_URL/asset" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>" |
 | /asset/id/{endpoint_id}  | Return the asset with the matching asset id (endpoint_id). Note multiple endpoint IDs can provided by using a delimiter “;”.
    |     `List[dict]` | curl -X GET "BASE_URL/asset/id/exalens_dev_12;exalens_dev_2" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"
  |
