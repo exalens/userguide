@@ -97,3 +97,5 @@ Access the table view to see historical data and recent values. You can filter a
 ![Table view](opcua_img/15.png)
 
 ![Table view](opcua_img/16.png)
+
+[Download this markdown file](./path_to_your_file/opcua.md)
