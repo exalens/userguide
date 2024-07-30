@@ -154,7 +154,9 @@ By utilising these syntax patterns, users can construct flexible queries to filt
 
 Curl Example:
 
-`curl -X GET "${BASE_URL}/incident?query=$(echo -e $(curl -G --data-urlencode "query={\"filter\":[[\"first_seen\", \">\", 0],\"and\",[\"status\",\"=\",\"Open\"]]}") )" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`
+```sh
+curl -X GET "${BASE_URL}/incident?query=$(echo -e $(curl -G --data-urlencode "query={\"filter\":[[\"first_seen\", \">\", 0],\"and\",[\"status\",\"=\",\"Open\"]]}") )" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"
+```
 
 
 
