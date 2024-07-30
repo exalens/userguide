@@ -77,42 +77,18 @@ The “/asset” REST API endpoint is used to query data related to system/devic
 | **Endpoint** | **Description**         | **Return Type** | **Example Call**                   |
 |:------:|:----------------:|-------:|:---------------------------:|
 | /asset  | Returns all endpoints listed in the Exalens platform.   |     `List[dict]` | curl -X GET "BASE_URL/asset" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>" |
-| /asset/id/{endpoint_id}  | Return the asset with the matching asset id (endpoint_id). Note multiple endpoint IDs can provided by using a delimiter “;”.
-   |     `List[dict]` | curl -X GET "BASE_URL/asset/id/exalens_dev_12;exalens_dev_2" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"
- |
+| /asset/id/{endpoint_id}  | Return the asset with the matching asset id (endpoint_id). Note multiple endpoint IDs can provided by using a delimiter “;”. |     `List[dict]` | curl -X GET "BASE_URL/asset/id/exalens_dev_12;exalens_dev_2" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"|
 | /asset/hostname | Return all assets with the matching asset hostname (hostname_list). Multiple hostnames can be delimited by “;”.
-|     `List[dict]` | curl -X GET "BASE_URL/asset/hostname/cls-remote-hp;asdf;ver" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"
-|
-| /asset/ip  | Return the asset with matching asset ip address (ip). Multiple ip address can be delimited by “;”.
-    |     `List[dict]` | curl -X GET "BASE_URL/asset/ip/192.168.1.1;192.168.1.2" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"
-  |
-| /asset/mac  | Return the asset with matching asset mac addresss (mac). Multiple mac address can be delimited by “;”.
-  |     `List[dict]`| curl -X GET "BASE_URL/asset/mac/1c:69:7a:6f:72:55;12:23:56:45:65:78" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"
- |
+|     `List[dict]` | curl -X GET "BASE_URL/asset/hostname/cls-remote-hp;asdf;ver" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"|
+| /asset/ip  | Return the asset with matching asset ip address (ip). Multiple ip address can be delimited by “;”.|     `List[dict]` | curl -X GET "BASE_URL/asset/ip/192.168.1.1;192.168.1.2" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"|
+| /asset/mac  | Return the asset with matching asset mac addresss (mac). Multiple mac address can be delimited by “;”.|     `List[dict]`| curl -X GET "BASE_URL/asset/mac/1c:69:7a:6f:72:55;12:23:56:45:65:78" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"|
 | /asset/device_type  | Return all the assets with matching asset device type (device_type). Multiple device type can be delimited by “;”.
-|     `List[dict]` | curl -X GET "BASE_URL/asset/device_type/iot%20sensor;dd;client" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"
-|
-| /asset/device_attributes  |  Return the asset with matching asset device attributes (device_attributes). Multiple device attributes can be delimited by “;”.
-   |     `List[dict]` | curl -X GET "BASE_URL/asset/device_attributes/PLC;HMI" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"
-   |
-| /asset/os  | Return the asset with matching asset operating system (os). Multiple operating system can be delimited by “;”.
-   |     `List[dict]` | curl -X GET "BASE_URL/asset/os/windows%20server%2011;ubuntu" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"
-  |
-| /asset/add | Adds a new asset. Input must match the expected keys in the endpoint JSON. IP (ip) field is mandatory, endpoint_id and endpoint_no are automatically generated and not required in the input. If “first_seen” and “last_seen” for the endpoint is not given, the current epoch time will be used.
-*|     `None` | curl -X POST "BASE_URL/asset/add/" -H "x-client-id: <client_id>" 
--H "x-api-key: <api_key>" 
--H "Content-Type: application/json" -d '{"ip": "11.12.23.13"}' |
-| /asset/remove  | Removes the asset with id (endpoint_id). Only 1 endpoint can be removed at a time. Therefore for bulk removal, this API must be used repeatedly in repeated requests for each asset that should be removed.
-    |     `None` | curl -X POST "BASE_URL/asset/remove/exalens_dev_12" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"
-   |
-| /asset/update  | Updates an asset. Only 1 endpoint can be changed at a time. Therefore for bulk updates, this API must be used repeatedly in repeated requests for each asset that should be updated.
-  |     `None` | curl -X POST "$BASE_URL/asset/update" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>" -H "Content-Type: application/json" -d '{
-  "endpoint_id": "exalens_dev_1",
-  "mac": "12:45:78:56:78:32",
-  "device_type": "client",
-  "device_attributes": "hmi",
-  "hostname_list": "test1"
-}' |
+|  `List[dict]` | curl -X GET "BASE_URL/asset/device_type/iot%20sensor;dd;client" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"|
+| /asset/device_attributes  |  Return the asset with matching asset device attributes (device_attributes). Multiple device attributes can be delimited by “;”.|     `List[dict]` | curl -X GET "BASE_URL/asset/device_attributes/PLC;HMI" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"|
+| /asset/os  | Return the asset with matching asset operating system (os). Multiple operating system can be delimited by “;”.|     `List[dict]` | curl -X GET "BASE_URL/asset/os/windows%20server%2011;ubuntu" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"|
+| /asset/add | Adds a new asset. Input must match the expected keys in the endpoint JSON. IP (ip) field is mandatory, endpoint_id and endpoint_no are automatically generated and not required in the input. If “first_seen” and “last_seen” for the endpoint is not given, the current epoch time will be used.|     `None` | curl -X POST "BASE_URL/asset/add/" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>" -H "Content-Type: application/json" -d '{"ip": "11.12.23.13"}'|
+| /asset/remove  | Removes the asset with id (endpoint_id). Only 1 endpoint can be removed at a time. Therefore for bulk removal, this API must be used repeatedly in repeated requests for each asset that should be removed. | `None` | curl -X POST "BASE_URL/asset/remove/exalens_dev_12" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"|
+| /asset/update  | Updates an asset. Only 1 endpoint can be changed at a time. Therefore for bulk updates, this API must be used repeatedly in repeated requests for each asset that should be updated. | `None` | curl -X POST "$BASE_URL/asset/update" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>" -H "Content-Type: application/json" -d '{"endpoint_id": "exalens_dev_1","mac": "12:45:78:56:78:32","device_type":"client","device_attributes": "hmi","hostname_list": "test1"}' |
 
 
 
