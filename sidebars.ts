@@ -23,6 +23,7 @@ const sidebars: SidebarsConfig = {
         { type: 'doc', id: 'datsources/opcua' },
       ],
     },
+   { type: 'doc', id: 'app_api' },
   ],
 
 };
