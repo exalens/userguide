@@ -7,7 +7,7 @@ title: App API
 ## App API Revision History
 | **Release** | **Date**         | **Comment**                  |
 |:------|:----------------|:-------|
-| 1.1  | Oct 2023   |     Release 1.1 - Adds the ability to edit and update assets via /endpoint |
+| 1.1  | Oct 2023   |     Release 1.1 - Adds the ability to edit and update assets via /asset |
 | 1.0  | Aug 2023   |     Release 1.0 - Initial REST API release | 
 
 
