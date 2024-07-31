@@ -78,7 +78,7 @@ The “/asset” REST API endpoint is used to query data related to system/devic
 | /asset/update  | POST |     Updates an asset. Note like /asset/add, the input must match the expected keys in the endpoint JSON. |
 
 
-## Endpoint Asset API Examples
+## Asset API Examples
 
 | **Endpoint** | **Description**         | **Return Type** | **Example Call**                   |
 |:------|:----------------|:-------|:---------------------------|
@@ -98,9 +98,44 @@ The “/asset” REST API endpoint is used to query data related to system/devic
 The “/incident” REST API endpoint is used to query data related to alerts (called incidents within API and JSON data) detected by the Exalens platform.
 
 ## Incident Alert API Paths
+| **URL** | **Method**         | **Query Data** |
+|:------|:----------------|:-------|
+|/incident|GET|Returns all incidents.|
+|/incident/id/{incident_id}|GET|Returns incidents with a matching incident ID {incident_id} – note that an incident ID is a “signature of the incident” and may not be unique.|
+|/incident/no/{incident_no}|GET|Returns all incidents with a matching incident number {incident_no}.|
+|/incident/name|GET|Returns all incidents with a matching incident detection name {detection_name}.|
+|/incident/type/{incident_type}|GET|Returns all incidents with a matching incident type – permitted values: “cyber”, “physical”.|
+|/incident/classification/{classification}|GET|Returns all incidents with a matching incident classification – permitted values: “High Risk”, “Suspicious”, “Anomalous”, “Cyber Hygiene”.|
+|/incident/actor_ip/{actor_ip}|GET|Returns all incidents with a matching Incident Actor IP address.|
+|/incident/actor_ip/{actor_hostname}|GET|Returns all incidents with a matching Incident Actor hostname.|
+|/incident/target_ip/{target_ip}|GET|Returns all incidents with a matching Incident Target IP address.|
+|/incident/target_ip/{target_hostname}|GET|Returns all incidents with a matching Incident Target hostname.|
+|/incident/detection_artifact|GET|Returns all incident with matching detection artifacts {detection_artifacts}.|
+|/incident/cascade/|GET|Returns all incidents that are linked to a cascade.|
+|/incident/cascade/{cascade_id}|GET|Returns all incidents that are linked with a specific incident cascade ID.|
+|/incident/status/{status}|GET|Returns all incidents with a matching incident status.|
+|/incident/update/{incident_id}/status/{status}|POST|Updates dates the Incident Status of an Incident with a matching Incident ID. Permitted values: “open”, “dismissed”, “acknowledged”, “suppressed”|
+|/incident/update/{incident_id}/add_note/{add_note}|POST|Adds a note to an incident with a matching Incident ID.|
+|/incident/update/{incident_id}/response_taken/{response_taken}|POST|Adds the response taken to the Incident to Incidents with a matching Incident ID.|
 
 ## Incident Alert API Examples
-
+| **Endpoint** | **Description**         | **Return Type** | **Example Call**                   |
+|:------|:----------------|:-------|:---------------------------|
+|/incident|Returns all the incidents.|`List[dict]`|`curl -X GET "BASE_URL/incident" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
+|/incident/id/{incident_id}|Returns the incident with the matching incident ID (incident_id). Multiple incident IDs can be delimited by “;”.|`List[dict]`|`curl -X GET "BASE_URL/incident/id/8d7e57523395dbbfa8cf514b5fe;8d7e57523395dbbfa8cf514b5fe" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>”`|
+|incident/no/{incident_no}|Returns the incident with the matching incident number (incident_no). Multiple incident no can be delimited by “;”.|`List[dict]`|`curl -X GET "BASE_URL/incident/no/1;2" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
+|/incident/name/{name}|Returns all incidents with matching incident name (detection_name).|`List[dict]`|`curl -X GET "BASE_URL/incident/name/Suspicious%20unsolicited%20ARP%20replies" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
+|/incident/type/{incident_type}|Returns all incidents with matching incident type (incident_type). Permitted values: cyber, physical. Multiple incident type can be delimited by “;”.      |`List[dict]`|`curl -X GET "BASE_URL/incident/type/cyber" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>" `|
+|/incident/classification/{classification}|Returns all incidents based on classification type (classification). Permitted values: THREAT_BEHAVIOUR, ANOMALOUS_BEHAVIOUR, CYBER_HYGIENE. Multiple classification type can be delimited by “;”.|`List[dict]`|`curl -X GET "BASE_URL/incident/classification/threat_behaviour;ANOMALOUS_BEHAVIOUR" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"` |
+|/incident/actor_ip/{actor_ip}|Returns all incidents with matching actor IP address. Multiple actor IP can be delimited by “;”.|`List[dict]`|`curl -X GET "BASE_URL/incident/actor_ip/10.0.1.100;10.0.1.100" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
+|/incident/actor_hostname/{actor_hostname}|Returns all incidents with matching actor hostname. Multiple actor hostname can be delimited by “;”.|`List[dict]`|`curl -X GET "BASE_URL/incident/actor_hostname/hostname-1;hostname-2" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
+|/incident/target_ip/{target_ip}|Returns all incidents with matching target IP address (target_ip). Multiple target IP can be delimited by “;”.|`List[dict]`|`curl -X GET "BASE_URL/incident/target_ip/10.0.1.103;10.0.1.104" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
+|/incident/target_hostname/{target_hostname}|Returns all incidents with matching target hostname (target_hostname). Multiple target hostname can be delimited by “;”.|`List[dict]`|`curl -X GET "BASE_URL/incident/target_hostname/en001;irc-1" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
+|/incident/cascade|Returns all incidents that are attached to a cascade.|`List[dict]`|`curl -X GET "BASE_URL/incident/cascade/" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"  `|
+|/incident/cascade/{cascade_id}|Returns all incidents that belong to a specific cascade ID.|`List[dict]`|`curl -X GET "BASE_URL/incident/cascade/1;5" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
+|/incident/update/{incident_id}/status|Updates the status of an incident. Permitted values: "open", "dismissed", "acknowledged", "suppressed". |`List[dict]`|`curl -X POST "BASE_URL/incident/update/8d7e57523395dbbfa8cf514b5fe;xcvsd/status/dismissed" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
+|/incident/update/{incident_id}/add_note|Updates the "Notes" key in the incident JSON.|`List[dict]`|`curl -X POST "BASE_URL/incident/update/59b461753aa6bd098e977b1e1a1;7ba8ab8ede8c3aa827f2e9222fa/add_note/testnotes" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
+|/incident/update/{incident_id}/{response_taken}|Updates the "response_taken" key in the incident json.|`List[dict]`|`curl -X POST "BASE_URL/incident/update/8d7e57523395dbbfa8cf514b5fe;7ba8ab8ede8c3aa827f2e9222fa/response_taken" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>" -H "Content-Type: application/json" -d '{"source":"testcase","actions":"1","incident_status_update":"close","approval":"manual"}'`|
 
 ## Cascades
 The “/cascade” REST API endpoint is used to query data related to alerts (incidents) linked with other alerts (incidents as) part of the Exalens root-cause analysis and alert correlation investigation automation workflow engine.
