@@ -141,9 +141,34 @@ The “/incident” REST API endpoint is used to query data related to alerts (c
 The “/cascade” REST API endpoint is used to query data related to alerts (incidents) linked with other alerts (incidents as) part of the Exalens root-cause analysis and alert correlation investigation automation workflow engine.
 
 ## Cascade API Paths
+| **URL** | **Method**         | **Query Data** |
+|:------|:----------------|:-------|
+|/cascade|GET|Returns all cascades.|
+|/cascade/id/{cascade_id}|GET|Returns all cascades with a matching Cascade ID.|
+|/cascade/name/{name}|GET|Returns all cascades with a matching Cascade ID.|
+|/cascacde/type/{cascade_type}|GET|Returns all cascades with a matching Cascade Type {cascade_type} = permitted values: “cyber”, “physical”, “cyber-physical”.|
+|/cascade/disposition/{disposition}|GET|Returns all cascades with a matching Disposition {disposition}.|
+|/cascade/actor_ip/{actor_ip}  |GET|Returns all cascades with a matching Actor IP address.|
+|/cascade/actor_hostname/{actor_hostname}|GET|Returns all cascades with a matching Actor hostname..|
+|/cascade/target_ip/{target_ip}|GET|Returns all cascades with a matching Target IP address.|
+|/cascade/target_hostname/{hostname}|GET|Returns all cascades with a matching Target hostname.|
+|/cascade/detection_artifact/{detection_artifact}|GET|Returns all cascades with a matching Detection artifacts {detection_artifacts}.|
+|/cascade/status /{status}|GET|Returns all cascades with a matching status – permitted values: “open”, “closed”.|
+|/cascade/update/{cascade_id}/Status/{status}|POST|Updates cascade with a matching .cascade ID – permitted values: “open”, “closed”.|
 
 ## Cascade API Examples
-
+| **Endpoint** | **Description**         | **Return Type** | **Example Call**                   |
+|:------|:----------------|:-------|:---------------------------|
+|/cascade|Returns all cascades.|`List[dict]`|`curl -X GET "BASE_URL/cascade" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
+|/cascade/id/{cascade_id}|Returns cascade with matching cascade id (cascade_id).|`List[dict]`|`curl -X GET "BASE_URL/cascade/id/1;2" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
+|/cascade/name|Returns all cascades with matching incident name (detection_name).|`List[dict]`|`curl -X GET "BASE_URL/cascade/Suspicious%20unsolicited%20ARP%20replies" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>" `|
+|/cascade/type/{cascade_type}|Returns all cascades based on cascade types (category). Permitted values: "cyber", "physical", "cyber-physical". Multiple cascade type is delimited by “;”.|`List[dict]`|`curl -X GET "BASE_URL/cascade/type/cyber" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
+|/cascade/disposition|Returns all cascades with matching disposition (disposition). Multiple disposition is delimited by “;”.|`List[dict]`|`curl -X GET "BASE_URL/cascade/cybersecurity%20threat" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>" `|
+|/cascade/actor_ip/{actor_ip}|Return all cascades with matching incidents actor IP address (actor_ip). Multiple actor IP addresses are delimited by “;”.|`List[dict]`|`curl -X GET "BASE_URL/cascade/actor_ip/10.0.1.100;10.0.1.100" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>" `|
+|/cascade/actor_hostname/{actor_hostname}|Returns all cascades with matching incidents actor hostname (actor_hostname). Multiple actor hostnames are delimited by “;”.|`List[dict]`|`curl -X GET "BASE_URL/cascade/actor_hostname/en001;irc-1" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>" `|
+|/cascade/target_ip/{target_ip}|Returns all cascades with matching incident target IP address (target_ip). Multiple ip addresses are delimited by “;”.|`List[dict]`|`curl -X GET "BASE_URL/cascade/target_ip/10.0.1.103;10.0.1.104" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>" `|
+|/cascade/target_hostname/{target_hostname}|Returns all cascades with matching incident target hostname (target_hostname). Multiple target hostnames are delimited by “:”.|`List[dict]`|`curl -X GET "BASE_URL/cascade/target_hostname/en001;irc-1" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>" `|
+|/cascade/update/{cascade_id}/status|Updates the cascade status (status) of cascade id (cascade_id). Permitted values: 'open',’closed’.|`List[dict]`|`curl -X POST "BASE_URL/cascade/update/1;5;2/acknowledged" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
 
 ## Querying on Asset, Incident or Cascade JSON
 To retrieve information from the system related to assets, incidents, or cascades, users can make use of specific REST endpoints: BASE_URL/asset, BASE_URL/incident, and BASE_URL/cascade. By appending a query parameter to these endpoints, users can customise their requests to obtain JSON data associated with assets, incidents, or cascades, creating more complex query to retrieve customised response data. The query parameter is a dictionary that facilitates the creation of queries, allowing users to specify filtering conditions and pagination preferences. The key components of the query parameter include:
@@ -228,19 +253,252 @@ request:
 
 
 ## Query-able field names for Assets 
-The following table lists the field name that can be queried for BASE_URL/asset
+The following table lists the field name that can be queried for BASE_URL/asset:
+
+| **Field Name** | **Description**  | **Type**    | **Notes** |
+|:------|:----------------|:-------|:-------|
+| endpoint_id  | Unique identifier for the endpoint  |    `String` | |
+|endpoint_no|Endpoint number|`Integer`||
+|ip|IP address of the endpoint asset|`String`||
+|hostname_list|List of hostnames associated with the endpoint asset|`List[string]`||
+|username_list|List of usernames associated with the endpoint|`List[string]`||
+|mac|MAC address of the endpoint|`String`||
+|device_type|Type of the device (e.g., client)|`String`||
+|device_attributes|List of additional attributes associated with the device|`List[string]`||
+|os|Operating system of the endpoint|`String`||
+|firmware|Firmware version of the endpoint|`String`||
+|vendor|Vendor information of the endpoint|`String`||
+|mac_vendor|MAC vendor information of the endpoint asset's MAC address|`String`||
+|model|Model information of the endpoint asset|`String`||
+|serial_number|Serial number of the endpoint|`String`||
+|criticality|Criticality level of the endpoint asset|`String`|Can be one of: Normal, Elevated, Critical.|
+|system_description|Description of the system|`String`||
+|status|Current status of the endpoint asset|`String`|Can be one of: Active, Inactive for last ‘x' days. Asset is considered 'active’ if last seen within last 7 days.|
+|first_seen|Timestamp of when the endpoint was first seen|`Integer`|UNIX EPOCH timestamp|
+|last_seen|Timestamp of when the endpoint was last seen|`Integer`|UNIX EPOCH timestamp|
+|probe_name|Dictionary containing first_seen_probe and last_seen_probe|`Dict`|E.g: {'first_seen_probe': "site1", 'last_seen_probe': "site10"}|
+|site|Site information of the endpoint asset|`String`||
+|area|Area information of the endpoint asset|`String`||
+|unit_location|Unit location information of the endpoint asset|`String`||
+|custodian_name|Name of the custodian of the endpoint asset|`String`||
+|custodian_email|Email of the custodian of the endpoint|`String`||
+|zone|Zone information of the endpoint|`String`||
+|purdue_level|Purdue level of the endpoint|`Integer`|Can be one of the following values: 0, 1, 2, 3, 3.5, 4, 5|
+|asset_grouping_id|ID associated with the asset grouping of the endpoint|`Integer`||
 
 ## Query-able field names for Incidents 
-The following table lists the fields that can be queried for BASE_URL/incident with query parameter.
+The following table lists the fields that can be queried for BASE_URL/incident with query parameter:
+
+| **Field Name** | **Description**  | **Type**    | **Notes** |
+|:------|:----------------|:-------|:-------|
+|incident_id|Unique identifier for the incident|`String`||
+|incident_no|Incident number|`Integer`||
+|detection_description|Description of the detection|`String`||
+|assigned_to|User or entity assigned to handle the incident|`String`|Default value is "Unassigned"|
+|detection_name|Description of the detected incident alert |`String`||
+|incident_ts|Timestamp of when the incident alert was detected|`Integer`|UNIX EPOCH timestamp|
+|status|Current status of the incident alert|`String`|Can be in one of the following: open, dismissed, acknowledged|
+|first_seen_utc|Timestamp of when the incident alert was first seen (in UTC)|`String`|e.g."2023-10-20 15:10:12"|
+|last_seen_utc|Timestamp of when the incident alert was last seen (in UTC)|`String`|e.g. "2023-10-20 15:10:32"|
+|first_seen|Timestamp of when the incident alert was first seen|`Integer`|UNIX EPOCH timestamp|
+|last_seen|Timestamp of when the incident alert was last seen|`Integer`|UNIX EPOCH timestamp|
+|duration|Duration of the incident (in seconds)|`Integer`||
+|strength|Detection strength of the incident alert|`Integer`|Values allowed: 0-100|
+|category|Category of the incident alert|`String`|Can be one of the following values: "Cyber", "Physical"|
+|detection_grouping|Grouping of the incident detection|`String`||
+|detection_context|Context of the incident detection|`String`||
+|detection_set_name|Name of the detection set|`String`||
+|suppression_timeout|Timestamp for incident alert suppression timeout|`Integer`|UNIX EPOCH timestamp|
+|suppression_timeout_utc|Suppression timeout for incident alert in UTC|`String`||
+|suppression_interval|Interval for incident alert suppression (in seconds)|`Integer`||
+|physical_process_monitor|Details about the physical process monitor|`List`||
+|actor|List of actors involved in the incident|`List[string]`||
+|actor_label|Label for the actor|`String`||
+|target|List of targets affected by the incident|`List[string]`||
+|target_label|Label for the target|`String`||
+|detection_summary|Summary of the incident alert detection|`String`||
+|classification|Classification of the incident|`String`|Can be one of the following values: "High Risk", "Suspicious", "Anomalous", "Cyber Hygiene"|
+|cascade_id|ID of the incident alert's cascade correlation|`Integer`||
+|parent_incident_id|ID of the parent incident alert in cascade|`Integer`||
+|parent_link|Link to the parent incident alert in cascade|`String`||
+|parent_delta|Delta value for the parent incident alert|`Integer`||
+|child_incident_ids|List of IDs of child incident alerts|`List[string]`||
+|is_root|Boolean indicating if the incident alert is the root of a cascade|`Boolean`||
+|service_indicator|Indicator of the service associated with the incident alert|`String`||
+|mitre_attack|List of MITRE ATT&CK ICS Tactics associated to incident alert|`List[string]`||
+|source|Source of the incident data|`String`||
+|detection_label|Label for the incident detection|`String`||
+|response_time|Timestamp indicating when the response actions were taken|`Integer`|UNIX EPOCH timestamp|
 
 ## Query-able field names for Cascades 
-The following table lists the fields that can be queried for BASE_URL/cascade with query parameter.
+The following table lists the fields that can be queried for BASE_URL/cascade with query parameter:
+
+| **Field Name** | **Description**  | **Type**    | **Notes** |
+|:------|:----------------|:-------|:-------|
+|root_node|Unique identifier for the root node of the cascade|`String`||
+|cascade_id|Identifier for the cascade|`Integer`||
+|nodes|List of nodes in the cascade|`List[string]`||
+|leaf_nodes|List of leaf nodes in the cascade|`List[string]`|risk_score|
+|status|Status of the cascade|`String`|Can be any one of the following: "open", "close"|
+|cascade_name|Name of the cascade|`String`||
+|category|Category of the cascade|`String`|Can be any one of the following: PHYSICAL, CYBER, CYBER_PHYSICAL|
+|first_seen|Timestamp of when the cascade was first seen|`Integer`|UNIX EPOCH timestamp|
+|last_seen|Timestamp of when the cascade was first seen|`Integer`|UNIX EPOCH timestamp|
+|cascade_description|Description of the cascade|`String`||
+|assigned_to|User or entity assigned to the cascade|`String`||
+|kill_chain|List of stages in the kill chain associated with the cascade|`List[string]`|E.g. `["Lateral Movement","Action on Objectives"]`|
+|incident_classification|List of incident classifications associated with the cascade|`List[string]`|e.g.`["High Risk", "Informational"]`|
+|mitre_attack|List of MITRE ATT&CK ICS Tactics associated to cascade|`List[string]`|e.g.`["Discovery", "Inhibit Response Function"]`|
 
 ## JSON Object Fields
 In this section each of the JSON REST API Objects and their respective fields are summarised.
 
 **Asset JSON**
+| **Field** | **Description**  | 
+|:------|:----------------|
+|endpoint_no|Unique number used to represent asset|
+|vlan|Last seen VLAN (Virtual Local Area Network) ID associated with this asset on the network|
+|vlan_history|VLAN ID history of the endpoint asset|
+|status|Status of the endpoint (“Active”/“Inactive”)|
+|probe_name|The name of probe where this asset was first seen|
+|probe_last_seen_ts|Last seen timestap of the probe|
+|assigned_process_tags|**(Deprecated – to be removed)**|
+|process_names|**(Deprecated – to be removed)**|
+|mac_vendor|Mac vendor of the mac|
+|ip|IP address of the asset|
+|mac|Mac address of the asset|
+|os|Operating system of the asset|
+|firmware|Firmware of the asset|
+|criticality|Criticality of the asset|
+|model|Model of the asset|
+|vendor|Vendor of the asset|
+|description|**(Deprecated – to be removed) – Replaced by system_description**|
+|system_description|System Description of the asset|
+|group|**(Deprecated – to be removed)**|
+|custodian|Contains name and email address of the user responsible for this asset|
+|site|The operational site of the asset|
+|location|The physical location of the asset|
+|device_attributes|Device attributes of the Asset|
+|device_type|The type of device e.g., Server, IoT Sensor, etc.|
+|hostname_list|List of hostnames of the Asset|
+|ip_history|History of IP address of the asset that may be due to dynamic network addressing|
+|mac_history|History of mac address of the asset|
+|first_seen|Asset’s first discovered epoch time|
+|last_seen|Asset’s last activity epoch time|
+|risk_score|**(Deprecated – to be removed)**|
+|asset_grouping_id|Grouping id of the asset used for similar_host|
+|similar_hosts|Assets that are similar to the current asset - and classified as peer asstes|
+|mac_ts|All Mac address of the asset and its last seen|
+|hosted_services|Count of the services hosted discovered for the asset|
+|accessed_services|Count of the services accessed discovered for the asset|
+|multicast_services|Count of the multicast services discovered for the asset|
+|broadcast_services|Count of the broadcast services discovered for the asset|
+|fingerprints|Count of unique network fingerprints discovered for the asset|
+|default_gateway|L2 and L3 Default gateway of the asset|
 
 **Incident JSON**
+| **Field** | **Description**  | 
+|:------|:----------------|
+|incident_id|Unique hash of the incident|
+|incident_no|Unique identifier of the incident|
+|detection_description|A detailed description of the detection|
+|assigned_to|The person or team responsible for this incident|
+|priority|**Deprecated – to be removed**|
+|detection_name|The name or label of the incident|
+|incident_ts|The timestamp when the incident alert occurred|
+|status|Status of the incident alert|
+|status_history|History of status changes|
+|first_seen_utc|Timestamp when the incident was first observed in UTC time|
+|last_seen_utc|Timestamp when the incident was last seen in UTC time|
+|src|Source of the incident alert|
+|dst|Destination of the incident alert|
+|src_port|Source port(s) present in the incident alert|
+|dst_port|Destination port(s) present in the incident alert|
+|src_hostname|Hostname associated with the source / actor of an incident|
+|dst_hostname|Hostname associated with the destination / target of an incident|
+|first_seen|Epoch time that the incident was first observed|
+|last_seen|Epoch time that the incident was last observed|
+|src_endpoint_id|Identifier for the source endpoint asset involved in the incident alert|
+|dst_endpoint_id|Identifier for the destination endpoint asset involved in the incident alert|
+|duration|Duration of the incident|
+|occurrence|Number of times the incident alert has occurred within suppression timeout|
+|incident_update|Last update or change made to the incident alert|
+|strength|Strength /confidence of the incident’s detection context|
+|category|Category to which the incident alert belongs (“cyber”, “physical”)|
+|detection_grouping|Grouping of detection involved.|
+|detection_set_name|Name of the detection|
+|linking_timeout|Analysis timeout for linking related incident alerts|
+|suppression_timeout|Time period during which the incident remains active and may be updated|
+|suppression_timeout_utc|Incident alert suppression timeout in UTC time|
+|suppression_interval|The interval between detection updates for the incident alert|
+|response|**Deprecated – to be removed (replaced by response_taken)**|
+|terms|**Deprecated – to be removed**|
+|physical_process_monitor|**Deprecated – to be removed**|
+|actor|The actor or entity responsible for the incident alert|
+|actor_label|A label or description for the actor|
+|target|The target or entity affected by the incident|
+|target_label|A label or description for the target|
+|detection_summary|A summary of the incident alert|
+|incident_summary|**Deprecated – to be removed**|
+|description|A general description of the detection|
+|severity|**Deprecated – to be removed**|
+|severity_text|**Deprecated – to be removed**|
+|classification|Classification of the incident (“High Risk”, “Suspicious”, “Anomalous”, “Cyber Hygiene”)|
+|risk_score|**Deprecated – to be removed**|
+|risk_score_label|**Deprecated – to be removed**|
+|cascade_summary|A summary of a cascade incident (for this and related incidents in the cascade)|
+|cascade_suppression_timeout|The suppression timeout for cascade incidents|
+|cascade_id|This incident alert's cascsade ID (if applicable)|
+|parent_incident_id|This incident alert's parent cascade incident ID (if applicable)|
+|parent_link|This incident alert's parent cascade link (if applicable)|
+|parent_delta|The time difference between this incident alert's parent incident alert first_seen|
+|child_incident_ids|The IDs of this incident alert's children incidents linked in a cascade (if applicable)|
+|is_root|A flag indicating if this incident is the root incident in a cascade|
+|behavioural_lookup_artifacts|**Deprecated - to be removed**|
+|detection_artifacts|Artifacts associated with the detection incident.|
+|service_indicator|Indicators related to a specific service or application seen in the incident|
+|mitre_attack|References to MITRE ATT&CK Framework and Tactics, Techniques and Procedures related to this incident|
+|kill_chain|Reference to cyber killchain phase potentially related to this incident|
+|query|**Deprecated – to be removed**|
+|source|The source or origin of the incident alert|
+|detection_label|A label or identifier for the detection|
+|cortex_url|URL or reference to the Exalens Cortex incident analysis view for this incident|
+|notes|Notes and comments related to this incident alert|
+|response_taken|Actions and responses taken in response to the incident|
+|indicators_triggered_flag|Flags indicating if certain detection indicators were triggered for this incident|
+|null_attributes|Deprecated - to be removed|
+|full_text|Deprecated - to be removed|
 
 **Cascade JSON**
+| **Field** | **Description**  | 
+|:------|:----------------|
+|root_node|Indicates the root incident within a cascade (e.g., the start of the cascade)|
+|cascade_id|A unique identifier for the cascade of incidents|
+|nodes|Represents the individual incidents within a cascade|
+|leaf_nodes|Refers to the leaf nodes in the cascade, which are the incidents that do not have child incidents|
+|risk_score|**Deprecated - to be removed**|
+|risk_score_label|**Deprecated - to be removed**|
+|risk_score_threshold|**Deprecated - to be removed**|
+|visible|Indicates whether the cascade of incidents is visible or hidden in the Cortex UI|
+|status|Status of the cascade" "open", "closed"|
+|cascade_name|Name or label for the cascade of incidents (usually a number and root incident alert name e.g., 11: Network Scanning Activity)|
+|category|Impact category to which the cascade belongs ("PHYSICAL", "CYBER", "CYBER_PHYSICAL")|
+|suppression_timeout|The duration during which updates to the cascade can be made, after which it can no longer be updated|
+|cascade_no|A unique identifier or number associated with the cacade|
+|first_seen|Timestamp when the cascade was first created|
+|last_seen|Timestamp when the cascade was last updated (via an update to one of the cascade incident alerts)|
+|cascade_description|A summary description of the cascade of incident alerts|
+|status_history|History of status changes of the cascade|
+|assigned_to|The person or team responsible for managing or responding to the cascade|
+|threat_signature|**Deprecated - to be removed**|
+|cascade_edges|Represents the connections or relationships between incidents in the cascade|
+|disposition|The disposition of the cascade|
+|explanation|Explanation or analysis of the cascade pattern and its linked incidents|
+|confidence|**Deprecated - to be removed**|
+|response|**Deprecated - to be removed**|
+|mitre_attack|References to MITRE ATT&CK Framework and the Tactics, Techniques and Procedures associated to incidents in the cascade|
+|kill_chain|A representation of the steps or stages of the cyber killchain observed for incidents in the cascade|
+|incident_classification|The classification or type of the cascade based on the incidents linked in the cascade ("PHYSICAL", "CYBER", "CYBER_PHYSICAL")|
+|cortex_url|URL or reference to the cascade analysis view in the Exalens Cortex UI |
+|notes|Notes and comments related to the cascade added by an analyst|
+|null_attributes|Deprecated - to be removed|
