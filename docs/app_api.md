@@ -119,6 +119,7 @@ The “/incident” REST API endpoint is used to query data related to alerts (c
 |/incident/update/{incident_id}/response_taken/{response_taken}|POST|Adds the response taken to the Incident to Incidents with a matching Incident ID.|
 
 ## Incident Alert API Examples
+
 | **Endpoint** | **Description**         | **Return Type** | **Example Call**                   |
 |:------|:----------------|:-------|:---------------------------|
 |/incident|Returns all the incidents.|`List[dict]`|`curl -X GET "BASE_URL/incident" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
@@ -141,6 +142,7 @@ The “/incident” REST API endpoint is used to query data related to alerts (c
 The “/cascade” REST API endpoint is used to query data related to alerts (incidents) linked with other alerts (incidents as) part of the Exalens root-cause analysis and alert correlation investigation automation workflow engine.
 
 ## Cascade API Paths
+
 | **URL** | **Method**         | **Query Data** |
 |:------|:----------------|:-------|
 |/cascade|GET|Returns all cascades.|
@@ -157,6 +159,7 @@ The “/cascade” REST API endpoint is used to query data related to alerts (in
 |/cascade/update/{cascade_id}/Status/{status}|POST|Updates cascade with a matching .cascade ID – permitted values: “open”, “closed”.|
 
 ## Cascade API Examples
+
 | **Endpoint** | **Description**         | **Return Type** | **Example Call**                   |
 |:------|:----------------|:-------|:---------------------------|
 |/cascade|Returns all cascades.|`List[dict]`|`curl -X GET "BASE_URL/cascade" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
@@ -350,10 +353,11 @@ The following table lists the fields that can be queried for BASE_URL/cascade wi
 |incident_classification|List of incident classifications associated with the cascade|`List[string]`|e.g.`["High Risk", "Informational"]`|
 |mitre_attack|List of MITRE ATT&CK ICS Tactics associated to cascade|`List[string]`|e.g.`["Discovery", "Inhibit Response Function"]`|
 
-## JSON Object Fields
+## Asset, Incident and Cascade JSON Object Fields
 In this section each of the JSON REST API Objects and their respective fields are summarised.
 
 **Asset JSON**
+
 | **Field** | **Description**  | 
 |:------|:----------------|
 |endpoint_no|Unique number used to represent asset|
@@ -397,6 +401,7 @@ In this section each of the JSON REST API Objects and their respective fields ar
 |default_gateway|L2 and L3 Default gateway of the asset|
 
 **Incident JSON**
+
 | **Field** | **Description**  | 
 |:------|:----------------|
 |incident_id|Unique hash of the incident|
@@ -470,6 +475,7 @@ In this section each of the JSON REST API Objects and their respective fields ar
 |full_text|Deprecated - to be removed|
 
 **Cascade JSON**
+
 | **Field** | **Description**  | 
 |:------|:----------------|
 |root_node|Indicates the root incident within a cascade (e.g., the start of the cascade)|
