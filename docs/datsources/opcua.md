@@ -6,9 +6,21 @@ title: OPC UA
 
 This guide provides step-by-step instructions on how to create a data source client using the Exalens platform. The client will connect to an OPC UA server to collect and store data, which can then be visualized using table and chart views.
 
-## Short Video Guide
+## Quick Video Guide
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/UX-6LI-0gLY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', maxWidth: '100%', height: 'auto' }}>
+  <iframe 
+    width="100%" 
+    height="100%" 
+    src="https://www.youtube.com/embed/UX-6LI-0gLY?si=xe_DTKzzkvklHubQ" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    referrerpolicy="strict-origin-when-cross-origin" 
+    allowfullscreen 
+    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+  </iframe>
+</div>
 
 See below for detailed instructions.
 
@@ -97,5 +109,3 @@ Access the table view to see historical data and recent values. You can filter a
 ![Table view](opcua_img/15.png)
 
 ![Table view](opcua_img/16.png)
-
-[Download this markdown file](./path_to_your_file/opcua.md)

@@ -1,5 +1,5 @@
 ---
-id: app_api
+id: app-api
 title: App API
 ---
 # App API
@@ -7,12 +7,13 @@ title: App API
 ## App API Revision History
 | **Release** | **Date**         | **Comment**                  |
 |:------|:----------------|:-------|
+| 1.2  | Aug 2024   |     Release 1.2 - Adds the ability to add, update and delete network lookups via /lookup |
 | 1.1  | Oct 2023   |     Release 1.1 - Adds the ability to edit and update assets via /asset |
 | 1.0  | Aug 2023   |     Release 1.0 - Initial REST API release | 
 
 
 ## Introduction
-Exalens' RESTful App API is available for system administrators and developers to integrate Exalens platform intelligence into their existing applications, as well as automatically programmatically desired actions and configuration changes on the Exalens Cortex. The App API is available to access and retrieve specific information from the Exalens platform by using any web development language to access. Common use cases involve retrieving alert data related to high-risk, suspicious, anomalous, or cyber hygiene activity at the network or device level that Exalens has detected, retrieving endpoint asset information associated with these events or for management and audit, or automatically updating alert status and asset intelligence, or system configuration.  The App API can be accessed via HTTPS connection to the management interface IP address of an Exalens Cortex server, whereby API query response data is provided in JSON format. Below are examples of event data provided by the Exalens platform that can be integrated into a third-party application:
+Exalens' RESTful App API is available for system administrators and developers to integrate Exalens platform intelligence into their existing applications, as well as automatically programmatically desired actions and configuration changes on the Exalens Cortex. The App API is available to access and retrieve specific information from the Exalens platform by using any web development language to access. Common use cases involve retrieving alert data related to high-risk, suspicious, anomalous, or cyber hygiene activity at the network or device level that Exalens has detected, retrieving endpoint asset information associated with these events or for management and audit, or automatically updating alert status and asset intelligence, or system configuration.The App API can be accessed via HTTPS connection to the management interface IP address of an Exalens Cortex server, whereby API query response data is provided in JSON format. Below are examples of event data provided by the Exalens platform that can be integrated into a third-party application:
 
 - Alerts (referred to as Incidents in the App API)
 - Alert Cascades (Correlated alerts with root cause analysis)
@@ -31,6 +32,7 @@ Within the Exalens platform, "Endpoints”, “Incidents", and “Cascades” ar
 | Incidents  | /incident   |     Exalens Detection incident alerts|
 | Cascades  | /cascade   |     Exalens Incident Cascades (correlated incident alerts) | 
 | Assets  | /asset |     Exalens recorded endpoint assets |
+| Lookups  | /lookup |     Exalens network monitoring lookups |
 
 
 ## Accessing the App API
@@ -54,12 +56,18 @@ To generate an API key for REST API access, navigate to the Exalens Cortex Web U
 | EditIncidents  | Can query and edit Incident data (e.g., status) within the Exalens Cortex  |   
 | ViewCascades  | Can query and retrieve Incident Cascade (endpoint) data from the Exalens Cortex   |     
 | EditCascades  | Can query and edit Incident Cascade (e.g., status) data within the Exalens Cortex |   
+| ViewLookup  | Can query and retrieve network monitoring lookup data from the Exalens Cortex   |     
+| EditLookup  | Can edit network monitoring lookup data (e.g., add/update/delete) within the Exalens Cortex |   
 
 Once the API key authentication scopes are selected, clicking the “Generate” button will create the API key. The Client ID and API Key token can be copied and used. Note that the scopes of a key may be updated by clicking on an existing key, changing the scopes, and then selecting “Update”.
 
 
 ## Assets
 The “/asset” REST API endpoint is used to query data related to system/device endpoint assets recorded within the Exalens platform, for example, via passive network monitoring, manual API or CSV uploads in the Cortex UI. This API can be used to add new assets in the Cortex UI.
+
+**Note**: 
+- To query assets add ViewEndpoints scope when generating an App API key in System Administration see [System Administration](./system_administration.md).
+- To edit alerts add EditEndpoints scope when generating an App API key in System Administration see [System Administration](./system_administration.md).
 
 ## Asset API Paths
 
@@ -70,6 +78,7 @@ The “/asset” REST API endpoint is used to query data related to system/devic
 | /asset/hostname  | GET |     Return all assets with matching hostnames in its hostname list |
 | /asset/ip  | GET   |     Return all assets with a matching IP address {ip} |
 | /asset/mac  | GET   |     Return all assets with a matching MAC address {mac} | 
+| /asset/device_category  | GET |     Return all assets with a matching device cateogry {device_category} |
 | /asset/device_type  | GET |     Return all assets with a matching device type {device_type} |
 | /asset/device_attributes  | GET   |     Return all assets with a matching device attributes (device_attributes) | 
 | /asset/os  | GET |     Return all assets with a matching Operating System {os} |
@@ -87,15 +96,23 @@ The “/asset” REST API endpoint is used to query data related to system/devic
 | /asset/hostname | Return all assets with the matching asset hostname (hostname_list). Multiple hostnames can be delimited by “;”. | `List[dict]` | `curl -X GET "BASE_URL/asset/hostname/cls-remote-hp;asdf;ver" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
 | /asset/ip  | Return the asset with matching asset ip address (ip). Multiple ip address can be delimited by “;”.|     `List[dict]` | `curl -X GET "BASE_URL/asset/ip/192.168.1.1;192.168.1.2" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
 | /asset/mac  | Return the asset with matching asset mac addresss (mac). Multiple mac address can be delimited by “;”.| `List[dict]`| `curl -X GET "BASE_URL/asset/mac/1c:69:7a:6f:72:55;12:23:56:45:65:78" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
+| /asset/device_category | Return all the assets with matching asset device category (device_category). Multiple device categories can be delimited by “;”.| `List[dict]` | ``curl -X GET "BASE_URL/asset/device_category/Network%20Equipment;IT;OT/ICS" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"``|
 | /asset/device_type  | Return all the assets with matching asset device type (device_type). Multiple device type can be delimited by “;”.| `List[dict]` | ``curl -X GET "BASE_URL/asset/device_type/iot%20sensor;dd;client" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"``|
 | /asset/device_attributes  |  Return the asset with matching asset device attributes (device_attributes). Multiple device attributes can be delimited by “;”.| `List[dict]` | `curl -X GET "BASE_URL/asset/device_attributes/PLC;HMI" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
 | /asset/os  | Return the asset with matching asset operating system (os). Multiple operating system can be delimited by “;”.|     `List[dict]` | `curl -X GET "BASE_URL/asset/os/windows%20server%2011;ubuntu" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
-| /asset/add | Adds a new asset. Input must match the expected keys in the endpoint JSON. IP (ip) field is mandatory, endpoint_id and endpoint_no are automatically generated and not required in the input. If “first_seen” and “last_seen” for the endpoint is not given, the current epoch time will be used.|     `None` | `curl -X POST "BASE_URL/asset/add/" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"` -H "Content-Type: application/json" -d '{"ip": "11.12.23.13"}'`|
+| Endpoint | Description | Response | Example |
+| --- | --- | --- | --- |
+| /asset/add | Adds a new asset. Input must match the expected keys in the endpoint JSON. IP (ip) field is mandatory, endpoint_id and endpoint_no are automatically generated and not required in the input. If “first_seen” and “last_seen” for the endpoint is not given, the current epoch time will be used. | None | `curl -X POST "BASE_URL/asset/add/" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>" -H "Content-Type: application/json" -d '{"ip": "11.12.23.13"}'` |
 | /asset/remove  | Removes the asset with id (endpoint_id). Only 1 endpoint can be removed at a time. Therefore for bulk removal, this API must be used repeatedly in repeated requests for each asset that should be removed. | `None` | `curl -X POST "BASE_URL/asset/remove/exalens_dev_12" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
 | /asset/update  | Updates an asset. Only 1 endpoint can be changed at a time. Therefore for bulk updates, this API must be used repeatedly in repeated requests for each asset that should be updated. | `None` | `curl -X POST "$BASE_URL/asset/update" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>" -H "Content-Type: application/json" -d '{"endpoint_id": "exalens_dev_1","mac": "12:45:78:56:78:32","device_type":"client","device_attributes": "hmi","hostname_list": "test1"}'` |
 
 ## Incident Alerts
 The “/incident” REST API endpoint is used to query data related to alerts (called incidents within API and JSON data) detected by the Exalens platform.
+
+**Note**
+- Alerts (referred to as Incidents in the App API)
+- To query incident alerts add ViewIncidents scope when generating an App API key in System Administration see [System Administration](./system_administration.md).
+- To edit incident alerts add EditIncidents scope when generating an App API key in System Administration see [System Administration](./system_administration.md).
 
 ## Incident Alert API Paths
 | **URL** | **Method**         | **Query Data** |
@@ -141,6 +158,10 @@ The “/incident” REST API endpoint is used to query data related to alerts (c
 ## Cascades
 The “/cascade” REST API endpoint is used to query data related to alerts (incidents) linked with other alerts (incidents as) part of the Exalens root-cause analysis and alert correlation investigation automation workflow engine.
 
+**Note**: 
+- To query Cascades add ViewCascades scope when generating an App API key in System Administration see [System Administration](./system_administration.md).
+- To edit Cascades add EditCascades scope when generating an App API key in System Administration see [System Administration](./system_administration.md).
+
 ## Cascade API Paths
 
 | **URL** | **Method**         | **Query Data** |
@@ -172,6 +193,38 @@ The “/cascade” REST API endpoint is used to query data related to alerts (in
 |/cascade/target_ip/{target_ip}|Returns all cascades with matching incident target IP address (target_ip). Multiple ip addresses are delimited by “;”.|`List[dict]`|`curl -X GET "BASE_URL/cascade/target_ip/10.0.1.103;10.0.1.104" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>" `|
 |/cascade/target_hostname/{target_hostname}|Returns all cascades with matching incident target hostname (target_hostname). Multiple target hostnames are delimited by “:”.|`List[dict]`|`curl -X GET "BASE_URL/cascade/target_hostname/en001;irc-1" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>" `|
 |/cascade/update/{cascade_id}/status|Updates the cascade status (status) of cascade id (cascade_id). Permitted values: 'open',’closed’.|`List[dict]`|`curl -X POST "BASE_URL/cascade/update/1;5;2/acknowledged" -H "x-client-id: <client_id>" -H "x-api-key: <api_key>"`|
+
+## Lookups
+The “/lookup” REST API endpoint is used to query and edit data related to network monioring lookup data within the Exalens platform. This API can be used to add, update or delete lookups in the Cortex UI. 
+
+**Note**: 
+- Table names and field names are case sensitive. CSV file column header values uploads MUST match exactly the case of the field name in the target lookup.
+- Do not add First Seen, Last Seen and Count fields to any lookup request.
+- To download lookup add ViewLookup scope and for other actions add EditLookup scope while generating api key.
+- For a list of currently available lookups and their lookup names see [Network Monitoring](./network_monitoring.md)
+
+## Lookup API Paths
+
+| **URL** | **Method**         | **Description**                  |
+|:------|:----------------|:-------|
+|/add|POST|Add a single lookup entry to a lookup|
+|/remove|POST|Remove a single lookup entry to a lookup|
+|/upload|POST|Bulk upload lookup entry via a CSV file to a lookup|
+|/download|POST|Download a look in CSV file format|
+|/clear|POST|Clear all records in a specific lookup|
+|/clearAll|POST|Clear all lookups|
+
+## Lookup API Examples
+
+| **Endpoint** | **Description**         | **Return Type** | **Example Call**                   |
+|:------|:----------------|:-------|:---------------------------|
+|/add|Adds a new IP to DNS Hostname mapping to lookup|||curl -X POST "{BASE_URL}/lookup/add" \ -H "x-client-id: client_id" \ -H "x-api-key: client_api_key" \ -H "Content-Type: application/json" \ -d '{"data_list": [{"IP": "8.8.8.8", "Hostname": "google.com"}], "collection_name": "DNS Hostname to IP Mapping"}' \ --insecure|
+|/remove|Removes a IP to DNS Hostname mapping record from lookup||curl -X POST "{BASE_URL}/lookup/remove" \ -H "x-client-id: client_id" \ -H "x-api-key: client_api_key" \ -H "Content-Type: application/json" \ --insecure \ -d '{"data_list": [{"IP": "8.8.8.8", "Hostname": "google.com"}], "collection_name": "DNS Hostname to IP Mapping"}'|
+|/upload|Uploads one or more IP to DNS Hostname mappings to lookup from CSV file||curl -X POST "{BASE_URL}/lookup/upload" \ -H "x-client-id: client_id" \ -H "x-api-key: client_api_key" \ -F "files=@$HOME/Downloads/DNS Hostname to IP Mapping.csv" \       # csv file path -F 'TableName={"name": "DNS Hostname to IP Mapping"}' \ --insecure -w "\nHTTP Status: %{http_code}\n"|
+|/download|Downloads specific lookup as CSV file||curl -X POST "{BASE_URL}/lookup/download" \ -H "x-client-id: client_id" \ -H "x-api-key: client_api_key" \ -H "Content-Type: application/json" \ --insecure \ -d '{"name": "DNS Hostname to IP Mapping"}' \ -o ~/Downloads/DNS_Hostname_to_IP_Mapping.csv \ -w "\nHTTP Status: %{http_code}\n"|
+|/clear|Clears all records from lookup||curl -X POST "{BASE_URL}/lookup/clear" \ -H "x-client-id: client_id" \ -H "x-api-key: client_api_key" \ -H "Content-Type: application/json" \ --insecure \ -d '{"collection_name": "DNS Hostname to IP Mapping"}'|
+|/ClearAll|Clears all lookups and record from Cortex||curl -X POST "{BASE_URL}/lookup/clearAll" \-H "x-client-id: client_id" \-H "x-api-key: client_api_key" \ --insecure|
+
 
 ## Querying on Asset, Incident or Cascade JSON
 To retrieve information from the system related to assets, incidents, or cascades, users can make use of specific REST endpoints: BASE_URL/asset, BASE_URL/incident, and BASE_URL/cascade. By appending a query parameter to these endpoints, users can customise their requests to obtain JSON data associated with assets, incidents, or cascades, creating more complex query to retrieve customised response data. The query parameter is a dictionary that facilitates the creation of queries, allowing users to specify filtering conditions and pagination preferences. The key components of the query parameter include:
@@ -266,7 +319,8 @@ The following table lists the field name that can be queried for BASE_URL/asset:
 |hostname_list|List of hostnames associated with the endpoint asset|`List[string]`||
 |username_list|List of usernames associated with the endpoint|`List[string]`||
 |mac|MAC address of the endpoint|`String`||
-|device_type|Type of the device (e.g., client)|`String`||
+|device_category|Category of the device|`String`|Can be one of: "IT", "OT/ICS", "Network Equipment"|
+|device_type|Type of the device (e.g., client)|`String`|Can be one of: "Unknown", "Client", "Server"|
 |device_attributes|List of additional attributes associated with the device|`List[string]`||
 |os|Operating system of the endpoint|`String`||
 |firmware|Firmware version of the endpoint|`String`||
