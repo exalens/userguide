@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx,md,mdx}\"",
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "docusaurus build",
@@ -27,6 +28,7 @@
     "@docusaurus/module-type-aliases": "3.4.0",
     "@docusaurus/tsconfig": "3.4.0",
     "@docusaurus/types": "3.4.0",
+    "prettier": "^3.3.3",
     "typescript": "~5.2.2"
   },
   "browserslist": {

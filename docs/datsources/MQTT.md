@@ -6,6 +6,12 @@ title: MQTT
 
 This guide provides step-by-step instructions on how to create a data source client using the Exalens platform. The client will connect to a MQTT Broker to collect and store data, which can then be visualized using table and chart views.
 
+## Short Video Guide
+
+[![Watch the video](https://img.youtube.com/vi/UX-6LI-0gLY/maxresdefault.jpg)](https://www.youtube.com/watch?v=UX-6LI-0gLY)
+
+See below for detailed instructions.
+
 ## Connect
 
 ### Create a New Data Source

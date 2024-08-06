@@ -11,7 +11,7 @@ The guide will provide information on how to set up passive network monitoring o
 ## Configuring Network Monitoring
 To enable passive network monitoring, at least one Exalens DC must be configured with a “Monitoring Interface” which configures the DC to activate its Deep Packet Inspection (DPI) engine for a specific network interface on the host in which the DC is installed, and start collecting and analysing packets from this interface. Once configured, the DC will begin generating and forwarding network logs to the destination Exalens Cortex for storage, processing and analysis.
 
-Configuring a “Monitoring Interface” on a DC is straightforward, however, before doing so it should be considered that select a “Monitoring Interface” for the DC to begin monitoring network traffic.
+Configuring a “Monitoring Interface” on a DC is straightforward, however, before configuration atleast one network interface on the DC host should be selected and available for the DC to configure as a "Monitoring Interface" and activation of passive monitoring of network traffic received on this interface.
 
 ## Passive Network Monitoring via TAP, SPAN, or On-Host
 
