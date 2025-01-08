@@ -67,8 +67,8 @@ The “/asset” REST API endpoint is used to query data related to system/devic
 
 **Note**:
 
-- To query assets add ViewEndpoints scope when generating an App API key in System Administration see [System Administration](./system_administration.md).
-- To edit alerts add EditEndpoints scope when generating an App API key in System Administration see [System Administration](./system_administration.md).
+- To query assets add ViewEndpoints scope when generating an App API key in System Administration see [System Administration](system-administration.md).
+- To edit alerts add EditEndpoints scope when generating an App API key in System Administration see [System Administration](system-administration.md).
 
 ## Asset API Paths
 
@@ -111,8 +111,8 @@ The “/incident” REST API endpoint is used to query data related to alerts (c
 **Note**
 
 - Alerts (referred to as Incidents in the App API)
-- To query incident alerts add ViewIncidents scope when generating an App API key in System Administration see [System Administration](./system_administration.md).
-- To edit incident alerts add EditIncidents scope when generating an App API key in System Administration see [System Administration](./system_administration.md).
+- To query incident alerts add ViewIncidents scope when generating an App API key in System Administration see [System Administration](system-administration.md).
+- To edit incident alerts add EditIncidents scope when generating an App API key in System Administration see [System Administration](system-administration.md).
 
 ## Incident Alert API Paths
 
@@ -162,8 +162,8 @@ The “/cascade” REST API endpoint is used to query data related to alerts (in
 
 **Note**:
 
-- To query Cascades add ViewCascades scope when generating an App API key in System Administration see [System Administration](./system_administration.md).
-- To edit Cascades add EditCascades scope when generating an App API key in System Administration see [System Administration](./system_administration.md).
+- To query Cascades add ViewCascades scope when generating an App API key in System Administration see [System Administration](system-administration.md).
+- To edit Cascades add EditCascades scope when generating an App API key in System Administration see [System Administration](system-administration.md).
 
 ## Cascade API Paths
 
@@ -223,7 +223,7 @@ The “/lookup” REST API endpoint is used to query and edit data related to ne
 
 | **Endpoint** | **Description** | **Return Type** | **Example Call**  |
 | :- | :-| :- | :-| 
-| /add         | Adds a new IP to DNS Hostname mapping to lookup                         |                  `curl -X POST "{BASE_URL}/lookup/add" \ -H "x-client-id: client_id" \ -H "x-api-key: client_api_key" \ -H "Content-Type: application/json" \ -d '{"data_list": [{"IP": "8.8.8.8", "Hostname": "google.com"}], "collection_name": "DNS Hostname to IP Mapping"}' \ --insecure` |
+| /add         | Adds a new IP to DNS Hostname mapping to lookup                         |                 |  `curl -X POST "{BASE_URL}/lookup/add" \ -H "x-client-id: client_id" \ -H "x-api-key: client_api_key" \ -H "Content-Type: application/json" \ -d '{"data_list": [{"IP": "8.8.8.8", "Hostname": "google.com"}], "collection_name": "DNS Hostname to IP Mapping"}' \ --insecure` |
 | /remove      | Removes a IP to DNS Hostname mapping record from lookup                 |                 | `curl -X POST "{BASE_URL}/lookup/remove" \ -H "x-client-id: client_id" \ -H "x-api-key: client_api_key" \ -H "Content-Type: application/json" \ --insecure \ -d '{"data_list": [{"IP": "8.8.8.8", "Hostname": "google.com"}], "collection_name": "DNS Hostname to IP Mapping"}'`                 |
 | /upload      | Uploads one or more IP to DNS Hostname mappings to lookup from CSV file |                 | `curl -X POST "{BASE_URL}/lookup/upload" \ -H "x-client-id: client_id" \ -H "x-api-key: client_api_key" \ -F "files=@$HOME/Downloads/DNS Hostname to IP Mapping.csv" \ # csv file path -F 'TableName={"name": "DNS Hostname to IP Mapping"}' \ --insecure -w "\nHTTP Status: %{http_code}\n"`    |
 | /download    | Downloads specific lookup as CSV file                                   |                 | `curl -X POST "{BASE_URL}/lookup/download" \ -H "x-client-id: client_id" \ -H "x-api-key: client_api_key" \ -H "Content-Type: application/json" \ --insecure \ -d '{"name": "DNS Hostname to IP Mapping"}' \ -o ~/Downloads/DNS_Hostname_to_IP_Mapping.csv \ -w "\nHTTP Status: %{http_code}\n"` |

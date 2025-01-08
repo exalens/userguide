@@ -21,76 +21,73 @@ When setting up passive network monitoring it is important to consider how packe
 
 - **Network SPAN port**: A SPAN port (sometimes called a mirror port) is a software feature built into a switch or router that creates a copy of selected packets passing through the device and sends them to a designated SPAN port. Using software, the administrator can easily configure or change what is monitored. A DC can be configured to receive packets from any SPAN-capable device by connecting its monitored interface to a device’s SPAN interface configured as a mirror port.
 
-- **On-Host DC**: A DC can be deployed on any Linux device to monitor the interface(s) of that Linux system and forwarding network logs to a Exalens Cortex. On-host DC deployments are only recommended for Linux hosts with at least 16GB RAM and 8-core CPUs.
+- **On Host**: A DC can be deployed on any Linux device to monitor the interface(s) of that Linux system and forwarding network logs to a Exalens Cortex. On-host DC deployments are only recommended for Linux hosts with at least 16GB RAM and 8-core CPUs.
 
 An illustrative example is provided below:
 
 ![Diagram showing the Exalens Network Monitoring Deployment Options](./network_monitoring/network_monitoring_overview.png)
 
 ## Adding Monitor Interfaces via the Cortex UI
-Configuration of a network monitoring interface on a DC is carried out under "System Administation" on the Cortex UI. 
+Configuration of a network monitoring interface on a DC is carried out under the "Network - Configure" menu option on the side navigation of the Cortex UI. Once in this menu, select the menu tab "Data Collectors", as shown below: 
 
-![Diagram showing the System Administration Option on Cortex UI](./network_monitoring/system_administration_option.png)
+![Diagram showing the System Administration Option on Cortex UI](./network_monitoring/network_configure.png)
 
-Navigating to "System Administration" and selecting the "Data Collectors" menu tab shows which DCs are available on the system. 
+Under the list of available Data Collectors, select the Data Collector you wish to configure passive network monitoring interfaces on by clicking on the "LAN" network icon. This will create a configuration popup window for configuring monitor interfaces on the Data Collector.
 
-![Diagram showing the Data Collector Tab under System Administration](./network_monitoring/administration_data_collector_tab.png)
+![Diagram showing the System Administration Option on Cortex UI](./network_monitoring/data_collector_config_button.png)
 
-Selecting the "Edit: button for a DC allows for adding a monitoring interface. **Important:** The name of the monitoring interface should match exactly how it appears on the DC.
+![Diagram showing the System Administration Option on Cortex UI](./network_monitoring/interface_configure_menu.png)
 
-![Diagram showing the Data Collector Edit option for setting network monitoring interfaces](./network_monitoring/administration_data_collector_interface_config.png)
+**Important:** The name of the monitoring interface should match exactly how it appears on the host system operating system in which the Data Collector is installed, and this interface must be up and available other this will result in the DPI engine continuously restarting its service until the interface is available.
 
-When network monitoring interfaces are added on the DC configuration, the Cortex will notify the DC to begin monitoring network traffic on the specified interface (note this can take a few minutes to start collection). After updating the DC configuration, if the newly configured interface is not available there may be no errors or warnings generated. You can validate network monitoring is correctly functioning by reviewing the network logs under Network Monitoring - Logs, selecting the “Conn” log and filtering the logs by the DC “Probe Name” field to see if traffic is being received by the Cortex from the DC on the desired interface. See the example below: 
+When network monitoring interfaces are added to the Data Collector configuration, the Cortex will notify the Data Collector to begin monitoring network traffic on the specified interface (note this can take a few minutes to start collection). After updating the Data Collector configuration, if the newly configured interface is not available there may be no errors or warnings generated. You can validate network monitoring is correctly functioning by reviewing the network logs under Network Monitoring - Logs, selecting the “Conn” log and filtering the logs by the Data Collector “Probe Name” field to see if traffic is being received by the Cortex from the DC on the desired interface. See the example below: 
 
 ![Diagram showing network logs being received by Data Collector](./network_monitoring/data_collector_network_logs.png)
 
 ## Setting Network Interface to Promiscuous Mode
-To enable fully passive monitoring of an interface on a host that allows the host to process all packets received by an interface, promiscuous mode must be enabled on the interface. To configure promiscuous mode on a network interface, run the following command:
+To enable fully passive monitoring of an interface on a host that allows the host to process all packets received by an interface, promiscuous mode must be enabled in the operating system of the host for the target interface. To configure promiscuous mode on a network interface, run the following command using the Exalens Data Collector binary on the host terminal command line:
 
-'''sh
-./retina-datacollector.sh --set_promisc
-'''
+```sh
+./exalens-datacollector --netmon-config
+```
 
-This command lists all available network interfaces for selection as a monitoring interface. The user selects which interfaces to set to promiscuous mode for network monitoring. Do not select the DC interface used to communicate with the Cortex, as this will break the connection between the DC and Cortex, therefore, for on-host DC deployments in Linux devices, promiscuous mode should not be set.
+This command will display all available interfaces in the host operating system. Select the number of the interface to configure in promiscuous mode. 
+
+**Important** configuring monitoring mode on any interface will prevent the interface being used for network communication, as this command sets the interface into a locked-down "receive-only" mode. Therefore do not enable this setting on any interface where network communication is required on the host system where the Data Collector is installed. Therefore, **DO NOT* select the Data Collector interface used to communicate with the Exalens Cortex, as this will break the connection between the Data Collector and Cortex, therefore. For on-host Data Collector deployments in Linux devices, promiscuous mode should not be set.
 
 ## Setting up a Monitoring Interface with a Secure Monitoring Configuration
-Exalens makes available a number of command line utility tools for network monitoring and command-line PCAP uploads. These utility tools can be accessed by download the utilities repository from Exalens Github here: [Exalens Utilities on Github](https://github.com/exalens/utilities).
+Exalens makes available a number of command line utility tools for network monitoring and command-line PCAP uploads. These utility tools are available in both the Exalens Cortex and Data Collector binaries.
 
-In the utilities folder, the script "set_netmon_interface.sh" enforces a secure monitoring configuration which prevents any inbound or outbound IPv4/IPv6 packets or outbound Ethernet frames being transmitted from a monitoring interface. Executing this script configures an interface with the following interface controls:
+All available utility tool commands can be seen by simply running ./exalens-cortex or ./exalens-datacollector, without any commands specified. This will output the available commands as follows:
+
+```sh
+./exalens-cortex
+Usage: ./exalens-cortex --start {tag} | --stop | --update {tag} | --backup | --restore-backup | --clean-install {tag} | --uninstall | --netmon-config | --install-docker | --uninstall-docker | --container-status | --upload-pcap
+```
+
+```sh
+./exalens-datacollector
+sage: $0 --start {tag} | --stop | --update {tag} | --backup | --restore-backup | --clean-install {tag} | --update-hostname {hostname} | --uninstall | --download-config | --netmon-config | --install-docker | --uninstall-docker | --container-status | --upload-pcap
+```
+
+All sets of utility tools between Exalens Cortex and Exalens Data Collector binaries work in the same way. However, for Exalens Data Collector there are two extra installation related tools "--download-config" and "updated-hostname {hostname}" which are discussed in the Exalens Data Collector installation overview. Note for some of the tools, elevated permissions may be required and requested, generating password prompt to supply the credentials of a privileged user on the host system.
+
+As previously discussed, "--netmon-config" enforces a secure monitoring configuration which prevents any inbound or outbound IPv4/IPv6 packets or outbound Ethernet frames being transmitted from a monitoring interface. Executing this script configures an interface with the following interface controls:
 
 - Enforcement of Promiscuous mode
 - IPtables block for inbound and output IPv4 and IPv6 packets
 - EBTables block for outbound Ethernet frames
 - Disabling of interface Broadcast, Multicast, and ARP
 
-When running the script use sudo permissions and provide the interface name to configure when prompted, choose whether the interface is Wireless or Wired, and choose "set" to enforce the configuration or "remove" to remove the configuration. See example below:
+## Uploading / Replaying PCAP files
+Using any Data Collector it is possible to upload and process PCAP files by replaying against a preconfigured Data Collector monitoring interface. Currently, this feature is only available via the command terminal using the utility tool “--upload-pcap. When running this tool, a software interface called "exalens0" is created which is used to replay all PCAP files, and is automatically setup into promiscuous mode. The PCAP replay tool uses tcpreplay software, which will be installed automatically if it is not presented on the host system when running the tool.
 
-'''
-~/utilities$ sudo ./set_netmon_interface.sh 
-Enter the interface name: replay
-Is this a Wi-Fi interface? (yes/no): no
-Would you like to set or remove the monitoring configuration? (set/remove): set
-Monitoring configuration successfully set for replay (wired)
-'''
+**Note:** The Data Collector which is replaying the PCAP must have the "exalens0" interface configured on the Exalens Cortex to successfully ingest the DPI network logs generated from uploading the PCAP. Therefore, it is recommended that on first use, the tool command "--upload-pcap" is run, then before a PCAP file is provided to the tool to replay, the "exalens0" interface is configured as a monitored interface for the respective Data Collector under "Network - Configure - Data Collectors", as discussed previously in this section.
 
-## Uploading PCAP files
-Using any DC it is possible to upload and process PCAP files by replaying them against any DC monitoring interface. Currently, this feature is only available via the command terminal using the utility script “upload_pcap.sh”. This script can be found under the utilities folder on the DC host it was downloaded to. 
+Once the monitored interface has been configured as a monitored interface for the Data Collector in the Exalens Cortex, the full path to the PCAP should be supplied to the tool to begin the PCAP replay and upload process, as follows:
 
-**Note:** Prior to running the "upload_pcap.sh" script, tcpreplay will need to be installed on the DC host. Use the following command to install tcpreply:
-
-'''
-sudo sudo apt install tcpreplay 
-'''
-
-It is recommended that a dedicated dummy software interface is created on the DC for replaying PCAP files. Similar to setting up a monitoring interface for live network packet capture, a PCAP file can be uploaded via a DC using a dummy software interface for PCAP file processing. This process is straightforward using the "create_dummy.sh" utility script in the utilities folder. As described in the previous section, under “System Administration - Data Collectors” the dummy software interface should be enabled for monitoring under the respective DC, using the “edit” button for the DC in the Data Collectors tab.
-
-Once the dummy interface has been created and configured as a monitored interface under the DC, the “upload_pcap.sh” utility script in the utilities folder should be used to upload a PCAP file via the DC. Run the scrip with sudo permission, when prompted the PCAP file name, interface to perform the PCAP replay (your dummy software interface, or any other interface you wish to you), and the speed in Mbps in which you wish to perform the replay. Once the PCAP is uploaded the following PCAP upload results will be displayed on the terminal. See example below:
-
-'''
-~/utilities$ sudo ./upload_pcap.sh 
-Enter the path to the PCAP file: snmp.pcap
-Enter the interface name for PCAP replay: replay
-Enter the PCAP replay bandwidth (e.g., 50Mbps): 10Mbps
+```
+**Enter the path to the PCAP file: /home/ubuntu/snmp.pcap**
 Uploading PCAP file...
 PCAP upload started: 2024-07-31 15:09:16.778469 ...
 PCAP upload completed: 2024-07-31 15:09:16.850959
@@ -104,12 +101,11 @@ Statistics for network device: replay
         Retried packets (ENOBUFS): 0
         Retried packets (EAGAIN):  0
 PCAP upload completed successfully.
-'''
+```
 
 Confirmation of the successfully processed PCAP can be conducted by navigating to “Network Monitoring - Logs” and checking whether network log data is appearing in expected log files. Connection logs always appear in the “conn” or “conn_long” log. You can filter by the DC name using the field “probe_name” in the log table “move column left” filter to only look for logs generated from the specific DC in which the PCAP file has been uploaded. See example below:
 
 ![Diagram showing network logs being received by Data Collector from PCAP replay](./network_monitoring/data_collector_network_logs_pcap.png)
-
 
 ## Generating Network Baselines
 
@@ -202,7 +198,8 @@ In the tables below the list of lookup categories and corresponding lookups are 
 
 # Passive Asset Discovery, Profiling and Tracking
 
-When network monitoring is enabled in an Exalens product, the system will automatically begin discovering, profiling and tracking assets based on their IP address, MAC address and hostname. This asset discovery and tracking feature builds a rich inventory of system assets communicating over the network, that enables end users to gain the following insights:
+When network monitoring is enabled in an Exalens product, the system will automatically begin discovering, profiling and tracking assets based on their IP address, MAC address and hostname. 
+This asset discovery and tracking feature builds a rich inventory of system assets communicating over the network, that enables end users to gain the following insights:
  
 
 - Understand what assets exist across their environment

@@ -17,28 +17,13 @@ const sidebars: SidebarsConfig = {
   tutorialSidebar: [
     { type: 'doc', id: 'exalens-platform-overview' },
     { type: 'doc', id: 'installation' },
-    {
-      type: 'category',
-      label: 'Datasources',
-      items: [
-        { type: 'doc', id: 'datsources/opcua' },     
-        { type: 'doc', id: 'datsources/mqtt' },
-        { type: 'doc', id: 'datsources/modbus' },
-        { type: 'doc', id: 'datsources/mtconnect_adapter' },
-        { type: 'doc', id: 'datsources/mtconnect_agent' },
-        { type: 'doc', id: 'datsources/snmp' },
-      ],
-    },
-    {
-      type: 'category',
-      label: 'CPS ThreatDetection',
-      items: [
-        { type: 'doc', id: 'asset-intelligence' },
-        { type: 'doc', id: 'network-monitoring' },
-        { type: 'doc', id: 'app-api' },
-      ],
-    }
-  ],
+    { type: 'doc', id: 'asset-intelligence' },
+    { type: 'doc', id: 'network-monitoring' },
+    { type: 'doc', id: 'app-api' },
+    { type: 'doc', id: 'system-administration' },
+    { type: 'doc', id: 'user-management' },
+    { type: 'doc', id: 'data-forwarding' }
+  ]
 };
 
 export default sidebars;
