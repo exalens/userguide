@@ -70,7 +70,7 @@ Usage: ./exalens-cortex --start {tag} | --stop | --update {tag} | --backup | --r
 sage: $0 --start {tag} | --stop | --update {tag} | --backup | --restore-backup | --clean-install {tag} | --update-hostname {hostname} | --uninstall | --download-config | --netmon-config | --install-docker | --uninstall-docker | --container-status | --upload-pcap
 ```
 
-All sets of utility tools between Exalens Cortex and Exalens Data Collector binaries work in the same way. However, for Exalens Data Collector there are two extra installation related tools "--download-config" and "updated-hostname {hostname}" which are discussed in the Exalens Data Collector installation overview. Note for some of the tools, elevated permissions may be required and requested, generating password prompt to supply the credentials of a privileged user on the host system.
+All sets of utility tools between Exalens Cortex and Exalens Data Collector binaries work in the same way. However, for Exalens Data Collector there are two extra installation related tools "--download-config" and "updated-hostname hostname" which are discussed in the Exalens Data Collector installation overview. Note for some of the tools, elevated permissions may be required and requested, generating password prompt to supply the credentials of a privileged user on the host system.
 
 As previously discussed, "--netmon-config" enforces a secure monitoring configuration which prevents any inbound or outbound IPv4/IPv6 packets or outbound Ethernet frames being transmitted from a monitoring interface. Executing this script configures an interface with the following interface controls:
 
