@@ -123,8 +123,8 @@ The available features of the Exalens Data Collector binary "exalens-datacollect
 | --install-docker                | Install Docker on host system                                                          |
 | --uninstall-docker              | Uninstall Docker on host system                                                        |
 | --download-config               | Download Exalens Data Collector configuration from Exalens Cortex                      |
-| --extract-config <download_dir/> | Manually extract to directory Exalens Data Collector configuration from Exalens Cortex |
-| --update-hostname 'hostname'           | Update the hostname of the Exalens Cortex the  Exalens Data Collector connects to      |
+| --extract-config <download_dir/>| Manually extract to directory Exalens Data Collector configuration from Exalens Cortex |
+| --update-hostname 'hostname'    | Update the hostname of the Exalens Cortex the  Exalens Data Collector connects to      |
 | --start                         | Start Exalens Data Collector software                                                  |
 | --stop                          | Stop Exalens Data Collector software                                                   |
 | --uninstall                     | Uninstalls Exalens Data Collector software                                             |
